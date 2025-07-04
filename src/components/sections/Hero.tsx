@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Activity, TrendingUp, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-fitness.jpg";
 
 const Hero = () => {
@@ -23,9 +24,11 @@ const Hero = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button variant="hero" size="lg" className="text-lg px-8 py-6">
-            <Activity className="h-5 w-5" />
-            Connect Your Hevy Account
+          <Button variant="hero" size="lg" className="text-lg px-8 py-6" asChild>
+            <Link to="/dashboard">
+              <Activity className="h-5 w-5" />
+              Connect Your Hevy Account
+            </Link>
           </Button>
           <Button variant="outline" size="lg" className="text-lg px-8 py-6">
             Watch Demo

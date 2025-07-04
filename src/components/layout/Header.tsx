@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Activity, User, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -8,16 +9,16 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <Activity className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            <Link to="/" className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               HevyBuddy
-            </span>
+            </Link>
           </div>
         </div>
         
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#dashboard" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
             Dashboard
-          </a>
+          </Link>
           <a href="#workouts" className="text-sm font-medium hover:text-primary transition-colors">
             Workouts
           </a>

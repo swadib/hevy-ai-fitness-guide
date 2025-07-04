@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Activity, TrendingUp, Calendar, MessageSquare, PieChart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const DashboardPreview = () => {
   return (
@@ -167,9 +168,11 @@ const DashboardPreview = () => {
         </div>
 
         <div className="text-center mt-16">
-          <Button variant="hero" size="lg" className="text-lg px-8 py-6">
-            <Activity className="h-5 w-5" />
-            Try HevyBuddy Now
+          <Button variant="hero" size="lg" className="text-lg px-8 py-6" asChild>
+            <Link to="/dashboard">
+              <Activity className="h-5 w-5" />
+              Try HevyBuddy Now
+            </Link>
           </Button>
         </div>
       </div>
