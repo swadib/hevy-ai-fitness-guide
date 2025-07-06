@@ -1,8 +1,51 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Activity, User, Settings } from "lucide-react";
+import { Activity, User, Settings, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out.",
+      });
+      
+      window.location.href = "/";
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center justify-between px-4">
@@ -34,10 +77,23 @@ const Header = () => {
           <Button variant="ghost" size="icon">
             <Settings className="h-4 w-4" />
           </Button>
-          <Button variant="hero">
-            <User className="h-4 w-4" />
-            Connect Hevy
-          </Button>
+          {user ? (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground hidden md:block">
+                {user.email}
+              </span>
+              <Button variant="ghost" size="icon" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <Link to="/auth">
+              <Button variant="hero">
+                <User className="h-4 w-4" />
+                Sign In
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>

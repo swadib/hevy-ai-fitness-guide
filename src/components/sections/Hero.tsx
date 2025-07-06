@@ -25,13 +25,15 @@ const Hero = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button variant="hero" size="lg" className="text-lg px-8 py-6" asChild>
-            <Link to="/dashboard">
+            <Link to="/auth">
               <Activity className="h-5 w-5" />
-              Connect Your Hevy Account
+              Get Started Free
             </Link>
           </Button>
-          <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-            Watch Demo
+          <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
+            <Link to="/dashboard">
+              Watch Demo
+            </Link>
           </Button>
         </div>
 
