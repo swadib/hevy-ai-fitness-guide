@@ -7,43 +7,25 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
-  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isConnected, setIsConnected] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
+    // Check if Hevy API key exists
+    const apiKey = localStorage.getItem("hevy_api_key");
+    setIsConnected(!!apiKey);
   }, []);
 
-  const handleSignOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      toast({
-        title: "Signed out",
-        description: "You have been successfully signed out.",
-      });
-      
-      window.location.href = "/";
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+  const handleDisconnect = () => {
+    localStorage.removeItem("hevy_api_key");
+    setIsConnected(false);
+    
+    toast({
+      title: "Disconnected",
+      description: "Your Hevy account has been disconnected.",
+    });
+    
+    window.location.href = "/";
   };
 
   return (
@@ -77,12 +59,12 @@ const Header = () => {
           <Button variant="ghost" size="icon">
             <Settings className="h-4 w-4" />
           </Button>
-          {user ? (
+          {isConnected ? (
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground hidden md:block">
-                {user.email}
+                Hevy Connected
               </span>
-              <Button variant="ghost" size="icon" onClick={handleSignOut}>
+              <Button variant="ghost" size="icon" onClick={handleDisconnect}>
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
@@ -90,7 +72,7 @@ const Header = () => {
             <Link to="/auth">
               <Button variant="hero">
                 <User className="h-4 w-4" />
-                Sign In
+                Connect Hevy
               </Button>
             </Link>
           )}
