@@ -19,14 +19,14 @@ const Header = () => {
           <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
             Dashboard
           </Link>
+          <Link to="/chat" className="text-sm font-medium hover:text-primary transition-colors">
+            AI Coach
+          </Link>
           <a href="#workouts" className="text-sm font-medium hover:text-primary transition-colors">
             Workouts
           </a>
           <a href="#nutrition" className="text-sm font-medium hover:text-primary transition-colors">
             Nutrition
-          </a>
-          <a href="#coach" className="text-sm font-medium hover:text-primary transition-colors">
-            AI Coach
           </a>
         </nav>
 
